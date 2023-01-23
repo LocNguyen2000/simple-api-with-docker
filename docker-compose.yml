@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  mysql0:
+    image: mysql:5.7
+    container_name: rootdb
+    env_file: ./.env
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    ports: 
+      - 3306:3306
+  mongo0:
+    image: mongo:4.4.10
+    container_name: loggerdb
+    ports:
+      - 27017:27017
+  web:
+    depends_on:
+      - mysql0
+      - mongo0
+    container_name: app0
+    build: .
+    env_file: ./.env
+    ports:
+      - "${PORT}:${PORT}"
