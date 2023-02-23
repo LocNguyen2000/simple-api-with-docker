@@ -1,21 +1,28 @@
 version: "3.9"
+networks:
+  my_network_2:
+    driver: bridge
 services:
   mysql0:
     image: mysql:5.7
-    container_name: rootdb
-    env_file: ./.env
+    container_name: root_sql_db
     restart: unless-stopped
+    env_file: ./.env
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${SQL_PASSWORD}
+      MYSQL_DATABASE: ${SQL_DB_NAME}
       MYSQL_ALLOW_EMPTY_PASSWORD: yes
-    ports: 
-      - 3306:3306
+    ports:
+      - ${SQL_PORT}:3306
+    networks:
+      - my_network_2
   mongo0:
-    image: mongo:4.4.10
+    image: mongo:latest
     container_name: loggerdb
     ports:
-      - 27017:27017
+      - ${MONGO_PORT}:27017
+    networks:
+      - my_network_2
   web:
     depends_on:
       - mysql0
@@ -25,3 +32,5 @@ services:
     env_file: ./.env
     ports:
       - "${PORT}:${PORT}"
+    networks:
+      - my_network_2

@@ -12,13 +12,13 @@ import { ProductLineFunc } from '../models/productlines.mjs';
 import { OfficeFunc } from '../models/offices.mjs';
 import { PaymentFunc } from '../models/payments.mjs';
 
-console.log(config.databaseName);
-console.log(config.user);
-console.log(config.password);
-console.log(config.host);
+const { sqlHost, sqlPort, sqlUser, sqlPassword, sqlDbName } = config;
 
-const sequelize = new Sequelize(config.databaseName, config.user, config.password, {
-  host: config.host,
+console.log(sqlHost, sqlPort, sqlUser, sqlPassword, sqlDbName);
+
+const sequelize = new Sequelize(sqlDbName, sqlUser, sqlPassword, {
+  host: sqlHost,
+  port: sqlPort,
   dialect: 'mysql',
 });
 

@@ -1,10 +1,10 @@
 import createError from 'http-errors';
 import { ValidationError } from 'sequelize';
-import sequelize from '../../config/database.mjs';
-import { ROLE } from '../../config/variables.mjs';
-import { mockCustomer } from '../mocks/customerData.mjs';
-import { mockEmployeesQuery, mockEmployee } from '../mocks/employeeData.mjs';
-import { getEmployee, addEmployee, updateEmployee, deleteEmployee } from '../../controllers/employee.controller.mjs';
+import sequelize from '../config/database.mjs';
+import { ROLE } from '../config/variables.mjs';
+import { mockCustomer } from '../tests/mocks/customerData.mjs';
+import { mockEmployeesQuery, mockEmployee } from '../tests/mocks/employeeData.mjs';
+import { getEmployee, addEmployee, updateEmployee, deleteEmployee } from '../controllers/employee.controller.mjs';
 
 let mockRequest, mockResponse, mockNext, mockTransaction;
 
@@ -46,8 +46,8 @@ describe('Employee controller', () => {
 
       let result = await getEmployee(mockRequest, mockResponse, mockNext);
 
-      expect(result.status.mock.calls[0][0]).toEqual(200);
-      expect(result.json.mock.calls[0][0]).toEqual({ data: mockEmployeesQuery });
+      expect(result.status).toBeCalledWith(200);
+      expect(result.json).toBeCalledWith({ data: mockEmployeesQuery });
     });
 
     test('success: get employee as leader role', async () => {
@@ -63,8 +63,8 @@ describe('Employee controller', () => {
 
       let result = await getEmployee(mockRequest, mockResponse, mockNext);
 
-      expect(result.status.mock.calls[0][0]).toEqual(200);
-      expect(result.json.mock.calls[0][0]).toEqual({ data: mockEmployeesQuery });
+      expect(result.status).toBeCalledWith(200);
+      expect(result.json).toBeCalledWith({ data: mockEmployeesQuery });
     });
     test('error: emplyee not found', async () => {
       mockRequest.query.p = 1;
@@ -78,8 +78,8 @@ describe('Employee controller', () => {
 
       let result = await getEmployee(mockRequest, mockResponse, mockNext);
 
-      expect(result.status.mock.calls[0][0]).toEqual(204);
-      expect(result.json.mock.calls[0][0]).toEqual({ message: 'Employee not found' });
+      expect(result.status).toBeCalledWith(204);
+      expect(result.json).toBeCalledWith({ message: 'Employee not found' });
     });
     test('error: Server error fail', async () => {
       mockRequest.role = ROLE.MANAGER;
@@ -90,7 +90,7 @@ describe('Employee controller', () => {
       Employee.findAndCountAll.mockRejectedValue(error);
 
       await getEmployee(mockRequest, mockResponse, mockNext);
-      expect(mockNext.mock.calls[0][0]).toEqual(error);
+      expect(mockNext).toBeCalledWith(error);
     });
   });
   describe('post', () => {
@@ -115,8 +115,8 @@ describe('Employee controller', () => {
       Employee.create.mockResolvedValue(mockEmployee);
       let result = await addEmployee(mockRequest, mockResponse, mockNext);
 
-      expect(result.status.mock.calls[0][0]).toEqual(201);
-      expect(result.json.mock.calls[0][0]).toEqual({ data: mockEmployee, message: 'Create employee successfully' });
+      expect(result.status).toBeCalledWith(201);
+      expect(result.json).toBeCalledWith({ data: mockEmployee, message: 'Create employee successfully' });
     });
     test('error: with status 400', async () => {
       (mockRequest.body = mockEmployee), (mockRequest.username = 'president');
@@ -127,7 +127,7 @@ describe('Employee controller', () => {
 
       await addEmployee(mockRequest, mockResponse, mockNext);
 
-      expect(mockNext.mock.calls[0][0]).toEqual(createError(400, error));
+      expect(mockNext).toBeCalledWith(createError(400, error));
     });
     test('error: Server error fail', async () => {
       (mockRequest.body = mockEmployee), (mockRequest.username = 'president');
@@ -137,7 +137,7 @@ describe('Employee controller', () => {
 
       await addEmployee(mockRequest, mockResponse, mockNext);
 
-      expect(mockNext.mock.calls[0][0]).toEqual(error);
+      expect(mockNext).toBeCalledWith(error);
     });
   });
   describe('put', () => {
@@ -170,8 +170,8 @@ describe('Employee controller', () => {
       Employee.update.mockResolvedValue(rowAffected);
 
       let result = await updateEmployee(mockRequest, mockResponse, mockNext);
-      expect(result.status.mock.calls[0][0]).toEqual(200);
-      expect(result.json.mock.calls[0][0]).toEqual({ message: `Update successfully ${rowAffected} record` });
+      expect(result.status).toBeCalledWith(200);
+      expect(result.json).toBeCalledWith({ message: `Update successfully ${rowAffected} record` });
     });
     test('success: Update successfully as manager', async () => {
       mockRequest.body = mockEmployee;
@@ -181,8 +181,8 @@ describe('Employee controller', () => {
       Employee.update.mockResolvedValue(rowAffected);
 
       let result = await updateEmployee(mockRequest, mockResponse, mockNext);
-      expect(result.status.mock.calls[0][0]).toEqual(200);
-      expect(result.json.mock.calls[0][0]).toEqual({ message: `Update successfully ${rowAffected} record` });
+      expect(result.status).toBeCalledWith(200);
+      expect(result.json).toBeCalledWith({ message: `Update successfully ${rowAffected} record` });
     });
     test('error: Server error fail', async () => {
       (mockRequest.body = mockEmployee), (mockRequest.role = ROLE.MANAGER);
@@ -193,18 +193,18 @@ describe('Employee controller', () => {
 
       await updateEmployee(mockRequest, mockResponse, mockNext);
 
-      expect(mockNext.mock.calls[0][0]).toEqual(error);
+      expect(mockNext).toBeCalledWith(error);
     });
     test('error: create fail with status 400', async () => {
-        mockRequest.body = mockEmployee;
-        mockRequest.role = ROLE.MANAGER;
+      mockRequest.body = mockEmployee;
+      mockRequest.role = ROLE.MANAGER;
 
-        mockRequest.params.id = 2;
+      mockRequest.params.id = 2;
 
-        let error = new ValidationError('Body request validate fail')
-        Employee.update.mockRejectedValue(error);
-        await updateEmployee(mockRequest, mockResponse, mockNext);
-        expect(mockNext.mock.calls[0][0]).toEqual(createError(400, error));
+      let error = new ValidationError('Body request validate fail');
+      Employee.update.mockRejectedValue(error);
+      await updateEmployee(mockRequest, mockResponse, mockNext);
+      expect(mockNext).toBeCalledWith(createError(400, error));
     });
   });
   describe('delete', () => {
@@ -254,20 +254,20 @@ describe('Employee controller', () => {
       let result = await deleteEmployee(mockRequest, mockResponse, mockNext);
 
       expect(mockTransaction.commit).toHaveBeenCalled();
-      expect(result.status.mock.calls[0][0]).toEqual(200);
-      expect(result.json.mock.calls[0][0]).toEqual({ message: `Delete successfully ${rowAffected} record` });
+      expect(result.status).toBeCalledWith(200);
+      expect(result.json).toBeCalledWith({ message: `Delete successfully ${rowAffected} record` });
     });
     test('error: Server error fail', async () => {
       mockRequest.officeCode = '123';
       mockRequest.params.id = 1;
 
-      let error = new Error('Server error fail')
+      let error = new Error('Server error fail');
       Employee.findOne.mockRejectedValue(error);
 
       mockTransaction.rollback.mockResolvedValue();
       await deleteEmployee(mockRequest, mockResponse, mockNext);
       expect(mockTransaction.rollback).toHaveBeenCalled();
-      expect(mockNext.mock.calls[0][0]).toEqual( error);
+      expect(mockNext).toBeCalledWith(error);
     });
   });
 });

@@ -1,9 +1,9 @@
-import { mockLogger } from '../mocks/loggerData.mjs';
-import { addLog, updateLog, getLog } from '../../controllers/logger.controller.mjs';
+import { mockLogger } from '../tests/mocks/loggerData.mjs';
+import { addLog, updateLog, getLog } from '../controllers/logger.controller.mjs';
 
 let mockRequest, mockResponse, mockNext;
 
-import Logger from '../../models/logger.mjs';
+import Logger from '../models/logger.mjs';
 
 describe('Logger controller', () => {
   describe('get', () => {
@@ -24,11 +24,11 @@ describe('Logger controller', () => {
 
       Logger.countDocuments = jest.fn();
 
-      jest.spyOn(Logger, "find").mockImplementationOnce(() => ({
+      jest.spyOn(Logger, 'find').mockImplementationOnce(() => ({
         limit: () => ({
-            skip: jest.fn().mockResolvedValue([mockLogger]),
+          skip: jest.fn().mockResolvedValue([mockLogger]),
         }),
-    }));
+      }));
     });
     afterEach(() => {
       jest.clearAllMocks();
@@ -53,35 +53,39 @@ describe('Logger controller', () => {
       });
     });
     test('success: get log messages with query startAt', async () => {
-        mockRequest.query.p = 1
-        mockRequest.query.user = 'test'
-        mockRequest.query.startAt = new Date()
-        let count = 1
-        Logger.countDocuments.mockResolvedValue(count)
+      mockRequest.query.p = 1;
+      mockRequest.query.user = 'test';
+      mockRequest.query.startAt = new Date();
+      let count = 1;
+      Logger.countDocuments.mockResolvedValue(count);
 
-        let result = await getLog(mockRequest, mockResponse, mockNext)
+      let result = await getLog(mockRequest, mockResponse, mockNext);
 
-        expect(result.status.mock.calls[0][0]).toEqual(200);
-        expect(result.json.mock.calls[0][0]).toEqual({data: {
-            rows: [mockLogger],
-            count,
-          },})
-    })
+      expect(result.status.mock.calls[0][0]).toEqual(200);
+      expect(result.json.mock.calls[0][0]).toEqual({
+        data: {
+          rows: [mockLogger],
+          count,
+        },
+      });
+    });
     test('success: get log messages with query endAt', async () => {
-        mockRequest.query.p = 1
-        mockRequest.query.user = 'test'
-        mockRequest.query.endAt = new Date()
-        let count = 1
-        Logger.countDocuments.mockResolvedValue(count)
+      mockRequest.query.p = 1;
+      mockRequest.query.user = 'test';
+      mockRequest.query.endAt = new Date();
+      let count = 1;
+      Logger.countDocuments.mockResolvedValue(count);
 
-        let result = await getLog(mockRequest, mockResponse, mockNext)
+      let result = await getLog(mockRequest, mockResponse, mockNext);
 
-        expect(result.status.mock.calls[0][0]).toEqual(200);
-        expect(result.json.mock.calls[0][0]).toEqual({data: {
-            rows: [mockLogger],
-            count,
-          },})
-    })
+      expect(result.status.mock.calls[0][0]).toEqual(200);
+      expect(result.json.mock.calls[0][0]).toEqual({
+        data: {
+          rows: [mockLogger],
+          count,
+        },
+      });
+    });
     test('error: server fail with status 500', async () => {
       mockRequest.query.p = 1;
       mockRequest.query.user = 'test';

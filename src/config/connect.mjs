@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import config from './config.mjs';
 
 const connectToDb = async (sequelize, mongodbString) => {
   try {
@@ -8,10 +9,15 @@ const connectToDb = async (sequelize, mongodbString) => {
     await sequelize.sync({ alter: true });
     console.log('All models were synchronized successfully.');
 
-    await mongoose.connect(mongodbString);
+    const {mongoHost, mongoPort, mongodbName} = config
+
+    const MONGO_URL_STRING = `mongodb://${mongoHost}:${mongoPort}/${mongodbName}`
+    console.log(MONGO_URL_STRING);
+
+    await mongoose.connect(MONGO_URL_STRING);
     console.log('Connect MongoDB Successfully!');
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.error('Unable to connect to all the database:', error);
   }
 };
 

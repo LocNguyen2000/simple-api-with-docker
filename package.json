@@ -4,8 +4,10 @@
   "description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",
   "main": "index.js",
   "scripts": {
-    "start": "cd src && nodemon main.mjs",
-    "test": "jest --coverage",
+    "start": "nodemon src/main.mjs",
+    "start:dev": "NODE_ENV=dev nodemon src/main.mjs",
+    "test": "NODE_ENV=test jest",
+    "test:cov": "NODE_ENV=test jest --coverage",
     "format": "npx prettier --write ."
   },
   "repository": {

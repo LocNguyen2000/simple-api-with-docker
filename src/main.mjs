@@ -16,12 +16,12 @@ import userRouter from './routes/auth.router.mjs';
 import productRouter from './routes/product.route.mjs';
 import sequelize from './config/database.mjs';
 import orderRouter from './routes/order.route.mjs';
-import logRouter from './routes/logger.route.mjs'
-import productLineRouter from './routes/product-line.route.mjs'
+import logRouter from './routes/logger.route.mjs';
+import productLineRouter from './routes/product-line.route.mjs';
 import Logger from './models/logger.mjs';
 
 const app = express();
-const port = config.port || process.env.PORT;
+const port = config.port;
 
 connectToDb(sequelize, config.mongodb);
 
@@ -48,9 +48,8 @@ app.use('/offices', officeRouter);
 app.use('/logger', loggerRouter);
 app.use('/products', productRouter);
 app.use('/orders', orderRouter);
-app.use('/logs', logRouter)
+app.use('/logs', logRouter);
 app.use('/product-lines', productLineRouter);
-
 
 // Not found method
 app.use((req, res, next) => {
@@ -60,9 +59,9 @@ app.use((req, res, next) => {
 // Error handling middleware
 app.use(async (err, req, res, next) => {
   if (!err.status || err.status === 404) {
-    await Logger.create({logLevel: 'Error', message: err.message, user: req.username || ''});
+    await Logger.create({ logLevel: 'Error', message: err.message, user: req.username || '' });
   } else {
-    await Logger.create({logLevel: 'Warning', message: err.message, user: req.username || ''});
+    await Logger.create({ logLevel: 'Warning', message: err.message, user: req.username || '' });
   }
 
   return res.status(err.status || 500).json({ status: err.status || 500, message: err.message });
@@ -73,5 +72,5 @@ app.listen(port, () => {
 });
 
 // Task run every minute
-scheduler.checkOrderStatus.start();
+// scheduler.checkOrderStatus.start();
 // scheduler.checkDefaultEmployee.start();
