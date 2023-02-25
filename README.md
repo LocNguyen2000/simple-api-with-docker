@@ -15,8 +15,12 @@ Installation steps:
 ```
 git clone https://github.com/LocNguyen2000/simple-api-with-docker.git
 
+- Development:
 docker compose up -d mysql0 mongo0
 npm run start:dev
+
+- Or build docker image
+docker compose up -d
 ```
 
 Use file `.env.example` as template to create an enviroment file `.env`
