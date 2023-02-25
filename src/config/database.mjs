@@ -13,13 +13,16 @@ import { OfficeFunc } from '../models/offices.mjs';
 import { PaymentFunc } from '../models/payments.mjs';
 
 const { sqlHost, sqlPort, sqlUser, sqlPassword, sqlDbName } = config;
-
 console.log(sqlHost, sqlPort, sqlUser, sqlPassword, sqlDbName);
 
 const sequelize = new Sequelize(sqlDbName, sqlUser, sqlPassword, {
   host: sqlHost,
   port: sqlPort,
   dialect: 'mysql',
+  // retry: {
+  //   match: [Sequelize.ConnectionError, Sequelize.ConnectionTimedOutError, Sequelize.TimeoutError],
+  //   max: 5,
+  // },
 });
 
 const createModelsAndRelations = () => {

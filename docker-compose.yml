@@ -1,36 +1,53 @@
+# version: "3.9"
+# networks:
 version: "3.9"
-networks:
-  my_network_2:
+networks:  
+  my_network_2:    
     driver: bridge
-services:
-  mysql0:
-    image: mysql:5.7
-    container_name: root_sql_db
-    restart: unless-stopped
-    env_file: ./.env
-    environment:
-      MYSQL_ROOT_PASSWORD: ${SQL_PASSWORD}
-      MYSQL_DATABASE: ${SQL_DB_NAME}
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
-    ports:
-      - ${SQL_PORT}:3306
-    networks:
-      - my_network_2
-  mongo0:
-    image: mongo:latest
-    container_name: loggerdb
-    ports:
-      - ${MONGO_PORT}:27017
-    networks:
-      - my_network_2
-  web:
-    depends_on:
-      - mysql0
-      - mongo0
-    container_name: app0
-    build: .
-    env_file: ./.env
-    ports:
-      - "${PORT}:${PORT}"
-    networks:
-      - my_network_2
+services:  
+    mysql0:    
+      image: mysql:8.0    
+      container_name: root_sql_db
+      env_file: ./.env
+      environment:      
+        MYSQL_ROOT_PASSWORD: ${SQL_PASSWORD}      
+        MYSQL_DATABASE: ${SQL_DB_NAME}      
+        MYSQL_ALLOW_EMPTY_PASSWORD: "true"    
+      healthcheck:      
+        test: [ "CMD-SHELL", 'mysqladmin ping' ]      
+        interval: 3s
+        timeout: 20s
+        retries: 5      
+        start_period: 10s
+      ports:      
+        - ${SQL_PORT}:3306
+      networks:      
+        - my_network_2
+    mongo0:    
+      image: mongo:latest
+      container_name: loggerdb
+      healthcheck:      
+        test: echo 'db.stats().ok'      
+        interval: 2s
+        timeout: 20s
+        retries: 5      
+        start_period: 10s
+      ports:      
+        - ${MONGO_PORT}:27017
+      networks:      
+        - my_network_2
+    web:    
+      depends_on:      
+        mysql0:        
+          condition: service_healthy
+        mongo0:        
+          condition: service_healthy
+      container_name: app0
+      build: .    
+      env_file: ./.env
+      environment:
+        - NODE_ENV=docker
+      ports:      
+        - "${PORT}:${PORT}"    
+      networks:      
+        - my_network_2
