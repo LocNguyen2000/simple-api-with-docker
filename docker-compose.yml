@@ -4,6 +4,8 @@ version: "3.9"
 networks:  
   my_network_2:    
     driver: bridge
+volumes:
+  mysql-data:
 services:  
     mysql0:    
       image: mysql:8.0    
@@ -23,8 +25,10 @@ services:
         - ${SQL_PORT}:3306
       networks:      
         - my_network_2
+      volumes:
+        - mysql-data:/usr/var/db/mysql
     mongo0:    
-      image: mongo:latest
+      image: mongo:5.0
       container_name: loggerdb
       healthcheck:      
         test: echo 'db.stats().ok'      

@@ -1,5 +1,5 @@
 # Arguments
-ARG NODE_IMAGE=node:16
+ARG NODE_IMAGE=node:16-alpine
 
 FROM ${NODE_IMAGE}
 
