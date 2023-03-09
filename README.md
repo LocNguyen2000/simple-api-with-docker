@@ -7,7 +7,7 @@
 Prerequisites:
 
 ```
-NodeJS 16.14.2 - MongoDB 5.0.4 - MySQL - VSCode Community - Docker (or any other IDE is good)
+NodeJS 16.14.2 - MongoDB 5.0.4 - MySQL - Docker - VSCode Community (or any other IDE is good)
 ```
 
 Installation steps:
@@ -26,13 +26,21 @@ docker compose up -d
 Use file `.env.example` as template to create an enviroment file `.env`
 
 ```
-HOST=`Host name for Database`
-PORT=`Port used for hosting Database`
-DB_USER=`Database username`
-DB_PASSWORD=`Password for authenticating Database`
-DB_NAME=`Database name`
+HOST=`App Host`
+PORT=`App port`
 SECRET_KEY=`Signature for encrypting and decrypting JWT`
-MONGO_CONNECTION_STRING=`Connection string for MongoDB`
+
+# main db
+SQL_HOST=`Host name for SQL Database`
+SQL_PORT=`Port used for SQL Database`
+SQL_USER=`Username for SQL Database `
+SQL_PASSWORD=`Password for authenticating Database`
+SQL_DB_NAME=`SQL Database name`
+
+# logger db
+MONG0_HOST=`Host name for Mongo Database`
+MONGO_PORT=`Port used for Mongo Database`
+MONGO_DB_NAME=`Mongo Database name`
 ```
 
 ## Testing

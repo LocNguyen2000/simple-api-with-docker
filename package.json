@@ -6,6 +6,9 @@
   "scripts": {
     "start": "nodemon src/main.mjs",
     "start:dev": "NODE_ENV=dev nodemon src/main.mjs",
+    "start:docker": "NODE_ENV=docker nodemon src/main.mjs",
+    "db:migrate:init": "node ./src/migration/db__migrate-init.mjs",
+    "db:migrate:reset": "node ./src/migration/db__migrate-down.mjs",
     "test": "NODE_ENV=test jest",
     "test:cov": "NODE_ENV=test jest --coverage",
     "format": "npx prettier --write ."

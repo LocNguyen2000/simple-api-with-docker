@@ -13,5 +13,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 EXPOSE 4000
+
+# Run migration
 CMD [ "npm", "start" ]
+
 
