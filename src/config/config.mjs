@@ -7,7 +7,7 @@ let config;
 
 console.log(NODE_ENV);
 
-if (NODE_ENV === 'test') {
+if (NODE_ENV === 'test' || NODE_ENV === 'prod') {
   config = {
     host: '0.0.0.0',
     port: 4000,

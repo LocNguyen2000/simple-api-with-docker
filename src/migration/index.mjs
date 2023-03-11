@@ -108,6 +108,7 @@ const migration = {
   },
   down: async function (_sequelize) {
     await _sequelize.query(`SET FOREIGN_KEY_CHECKS = 0`);
+    await _sequelize.query(`TRUNCATE table users`);
     await _sequelize.query(`TRUNCATE table employees`);
     await _sequelize.query(`TRUNCATE table role`);
     await _sequelize.query(`TRUNCATE table offices`);

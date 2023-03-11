@@ -7,6 +7,8 @@
     "start": "nodemon src/main.mjs",
     "start:dev": "NODE_ENV=dev nodemon src/main.mjs",
     "start:docker": "NODE_ENV=docker nodemon src/main.mjs",
+    "start:prod": "NODE_ENV=prod pm2 start ecosystem.config.js",
+    "stop:prod": "pm2 stop ecosystem.config.js",
     "db:migrate:init": "node ./src/migration/db__migrate-init.mjs",
     "db:migrate:reset": "node ./src/migration/db__migrate-down.mjs",
     "test": "NODE_ENV=test jest",
@@ -35,6 +37,7 @@
     "mysql2": "^2.3.3",
     "node-cron": "^3.0.2",
     "nodemon": "^2.0.20",
+    "pm2": "^5.2.2",
     "sequelize": "^6.23.2",
     "swagger-ui-express": "^4.5.0"
   },
