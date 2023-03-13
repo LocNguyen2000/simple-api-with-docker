@@ -7,16 +7,16 @@ const { mongoHost, mongoPort, mongodbName } = config;
 const connectToDb = async (sequelize, mongodbString = `mongodb://${mongoHost}:${mongoPort}/${mongodbName}`) => {
   try {
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+    console.log('MySQL Connection has been established successfully.');
 
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ force: true });
     console.log('All models were synchronized successfully.');
 
     await mongoose.connect(mongodbString);
-    console.log('Connect MongoDB Successfully!');
+    console.log('MongoDB Connection has been established successfully.');
 
-    await migration.up(sequelize);
-    console.log('Running migration to db');
+    // // RUN ONLY ONCE (OR USE SCRIPT)
+    // await migration.up(sequelize);
   } catch (error) {
     console.error('Unable to connect to all the database:', error);
   }
