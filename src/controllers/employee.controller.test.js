@@ -104,7 +104,7 @@ describe('Employee controller', () => {
         json: jest.fn().mockReturnThis(),
       };
       mockNext = jest.fn();
-      Employee.create = jest.fn();
+      Employee.findOrCreate = jest.fn();
     });
     afterEach(() => {
       jest.clearAllMocks();
@@ -112,7 +112,7 @@ describe('Employee controller', () => {
     test('success: Create employee successfully', async () => {
       (mockRequest.body = mockEmployee), (mockRequest.username = 'president');
 
-      Employee.create.mockResolvedValue(mockEmployee);
+      Employee.findOrCreate.mockResolvedValue([mockEmployee, true]);
       let result = await addEmployee(mockRequest, mockResponse, mockNext);
 
       expect(result.status).toBeCalledWith(201);
@@ -123,7 +123,7 @@ describe('Employee controller', () => {
 
       // trả về lỗi
       let error = new ValidationError('Body request validate fail');
-      Employee.create.mockRejectedValue(error);
+      Employee.findOrCreate.mockRejectedValue(error);
 
       await addEmployee(mockRequest, mockResponse, mockNext);
 
@@ -133,7 +133,7 @@ describe('Employee controller', () => {
       (mockRequest.body = mockEmployee), (mockRequest.username = 'president');
       // trả về lỗi
       let error = new Error('Server error fail');
-      Employee.create.mockRejectedValue(error);
+      Employee.findOrCreate.mockRejectedValue(error);
 
       await addEmployee(mockRequest, mockResponse, mockNext);
 
@@ -228,7 +228,7 @@ describe('Employee controller', () => {
       sequelize.transaction = jest.fn().mockResolvedValue(mockTransaction);
 
       Employee.findOne = jest.fn();
-      Employee.create = jest.fn();
+      Employee.findOrCreate = jest.fn();
       Employee.destroy = jest.fn();
       Customer.create = jest.fn();
       Customer.findAll = jest.fn();

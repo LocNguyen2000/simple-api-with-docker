@@ -91,7 +91,7 @@ describe('Customer controller', () => {
       };
       mockNext = jest.fn();
 
-      Customer.create = jest.fn();
+      Customer.findOrCreate = jest.fn();
     });
     afterEach(() => {
       jest.clearAllMocks();
@@ -100,7 +100,7 @@ describe('Customer controller', () => {
       mockRequest.body = mockCustomer;
 
       // fake dữ liệu trả về
-      Customer.create.mockResolvedValue(mockCustomer);
+      Customer.findOrCreate.mockResolvedValue([mockCustomer, true]);
 
       let result = await addCustomer(mockRequest, mockResponse, mockNext);
 
@@ -113,7 +113,7 @@ describe('Customer controller', () => {
 
       // trả về lỗi
       let error = new ValidationError('Body request validate fail');
-      Customer.create.mockRejectedValue(error);
+      Customer.findOrCreate.mockRejectedValue(error);
 
       await addCustomer(mockRequest, mockResponse, mockNext);
 
@@ -124,7 +124,7 @@ describe('Customer controller', () => {
 
       // trả về lỗi
       let error = new Error('Server error fail');
-      Customer.create.mockRejectedValue(error);
+      Customer.findOrCreate.mockRejectedValue(error);
 
       await addCustomer(mockRequest, mockResponse, mockNext);
 
@@ -147,6 +147,7 @@ describe('Customer controller', () => {
       mockNext = jest.fn();
 
       Customer.update = jest.fn();
+      Customer.findByPk = jest.fn();
     });
     afterEach(() => {
       jest.clearAllMocks();
@@ -156,6 +157,7 @@ describe('Customer controller', () => {
 
       // fake ket qua tra ve
       let rowAffected = 1;
+      Customer.findByPk.mockResolvedValue(mockCustomer);
       Customer.update.mockResolvedValue(rowAffected);
 
       let result = await updateCustomer(mockRequest, mockResponse, mockNext);
@@ -170,6 +172,7 @@ describe('Customer controller', () => {
 
       // fake ket qua tra ve
       let rowAffected = 1;
+      Customer.findByPk.mockResolvedValue(mockCustomer);
       Customer.update.mockResolvedValue(rowAffected);
 
       let result = await updateCustomer(mockRequest, mockResponse, mockNext);
@@ -192,6 +195,7 @@ describe('Customer controller', () => {
       mockRequest.customerNumber = 2;
 
       let error = new ValidationError('Body request validate fail');
+      Customer.findByPk.mockResolvedValue(mockCustomer);
       Customer.update.mockRejectedValue(error);
 
       await updateCustomer(mockRequest, mockResponse, mockNext);
@@ -204,7 +208,7 @@ describe('Customer controller', () => {
       mockRequest.customerNumber = 2;
 
       let error = new Error('Server error fail');
-      Customer.update.mockRejectedValue(error);
+      Customer.findByPk.mockRejectedValue(error);
 
       await updateCustomer(mockRequest, mockResponse, mockNext);
 

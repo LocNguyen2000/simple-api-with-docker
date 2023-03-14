@@ -10,8 +10,8 @@ export const getCustomer = async (req, res, next) => {
     let queryFilter = req.query;
     let { p: page } = req.query;
 
-    page = page ? ((page <= 0) ? 1 : page) : 1
-    delete queryFilter.p
+    page = page ? (page <= 0 ? 1 : page) : 1;
+    delete queryFilter.p;
 
     if (req.role == ROLE.STAFF) {
       // Staff chỉ được xem khách hàng của họ
@@ -49,13 +49,13 @@ export const addCustomer = async (req, res, next) => {
         updatedBy: username,
         createdBy: username,
       })
-    )
+    );
 
     if (!created) {
-      throw new ValidationError('Employee already exist')
+      throw new ValidationError('Employee already exist');
     }
 
-    return res.status(201).json({ data: customer });
+    return res.status(201).json({ data: customerInstance });
   } catch (error) {
     if (error instanceof ValidationError) {
       return next(createError(400, error.message));
@@ -85,10 +85,7 @@ export const updateCustomer = async (req, res, next) => {
 
     customerRequest.updatedBy = username;
 
-    customerInstance = Object.assign(
-      customerInstance,
-      customerRequest
-    )
+    customerInstance = Object.assign(customerInstance, customerRequest);
 
     let queryObj = { customerNumber: id };
     let rowAffected = await Customer.update(customerInstance, { where: queryObj });
