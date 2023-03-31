@@ -46,5 +46,5 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/{{secrets.EC2_TARGET_DIR}}
+            cd ~/app
             sh startup.sh
