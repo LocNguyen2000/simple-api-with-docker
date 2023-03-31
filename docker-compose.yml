@@ -38,18 +38,6 @@ services:
         - ${MONGO_PORT}:27017
       networks:      
         - my_network_2
-    nginx0:
-      image: nginx:alpine
-      container_name: nginx0
-      volumes:
-      - ./templates:/etc/nginx/templates
-      ports:
-      - "80:80"
-      networks:      
-        - my_network_2
-      environment:
-      - NGINX_HOST=0.0.0.0
-      - NGINX_PORT=80
     web:
       depends_on:      
         mysql0:        
@@ -57,11 +45,10 @@ services:
         mongo0:        
           condition: service_healthy
       build: .    
-      scale: 3
       env_file: ./.env
       environment:
         - NODE_ENV=docker
       ports:      
-        - "${PORT}-${PORT_RANGE}:${PORT}"    
+        - "${PORT}:${PORT}"    
       networks:      
         - my_network_2
