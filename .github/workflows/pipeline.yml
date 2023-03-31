@@ -1,0 +1,50 @@
+name: Unit test 
+on:
+  push:
+    branches:
+      - "main"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - run: echo "Start runnning unit test on Github Actions"
+      - uses: actions/checkout@v2
+      
+      - name: Setup on Node.JS ${{matrix.node-version}}
+        uses: actions/setup-node@v1
+        with: 
+          node-version: ${{matrix.node-version}}
+          
+      - name: Installation
+        run: npm ci
+        
+      - name: Testing
+        run: npm test
+  push-ec2:
+    name: Deploy to EC2
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the files
+        uses: actions/checkout@v2
+
+      - name: Deploy to AWS Server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.EC2_HOST_DNS }}
+          REMOTE_USER: ${{ secrets.EC2_USERNAME }}
+          TARGET: ${{ secrets.EC2_TARGET_DIR }}
+
+      - name: Executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST_DNS }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/EC2_TARGET_DIR
+            sh startup.sh
