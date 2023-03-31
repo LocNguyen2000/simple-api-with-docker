@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v1
         with: 
           node-version: ${{matrix.node-version}}
-          
+
       - name: Installation
         run: npm ci
         
@@ -46,5 +46,5 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/EC2_TARGET_DIR
+            cd ~/{{secrets.EC2_TARGET_DIR}}
             sh startup.sh
