@@ -21,6 +21,9 @@ describe('Middleware controller', () => {
         cookies: {
           access_token: null,
         },
+        headers: {
+          'x-api-key': null,
+        },
       };
       mockResponse = {
         status: jest.fn().mockReturnThis(),
@@ -54,6 +57,7 @@ describe('Middleware controller', () => {
     test('error: Server error fail', async () => {
       let token = jwtGenerate(mockDataInfo);
       mockRequest.cookies.access_token = token;
+      mockRequest.cookies['x-api-key'] = null;
       config.secretKey = '123';
 
       let error = new JsonWebTokenError('invalid signature');
@@ -67,6 +71,9 @@ describe('Middleware controller', () => {
     beforeEach(() => {
       mockRequest = {
         role: null,
+        headers: {
+          'x-api-key': null,
+        },
       };
       mockResponse = {
         status: jest.fn().mockReturnThis(),

@@ -3,7 +3,7 @@ import { ValidationError } from 'sequelize';
 import { ROLE } from '../config/variables.mjs';
 import sequelize from '../config/database.mjs';
 
-const { Customer, Employee } = sequelize.models
+const { Customer, Employee } = sequelize.models;
 
 export const getEmployee = async (req, res, next) => {
   try {
@@ -14,8 +14,8 @@ export const getEmployee = async (req, res, next) => {
     let queryFilter = req.query;
     let { p: page } = req.query;
 
-    page = page ? ((page <= 0) ? 1 : page) : 1
-    delete queryFilter.p
+    page = page ? (page <= 0 ? 1 : page) : 1;
+    delete queryFilter.p;
 
     if (role === ROLE.LEADER) {
       queryFilter = Object.assign(queryFilter, { reportsTo: id });
@@ -27,7 +27,7 @@ export const getEmployee = async (req, res, next) => {
       where: queryFilter,
       offset: (page - 1) * 10,
       limit: 10,
-  });
+    });
 
     if (employeeList.rows.length == 0) {
       return res.status(204).json({ message: 'Employee not found' });
@@ -44,14 +44,18 @@ export const addEmployee = async (req, res, next) => {
     let employee = req.body,
       username = req.username;
 
-    let [employeeInstance, created] = await Employee.findOrCreate(
-      Object.assign(employee, {
+    let [employeeInstance, created] = await Employee.findOrCreate({
+      where: {
+        employeeNumber: employee.employeeNumber,
+      },
+      defaults: Object.assign(employee, {
         updatedBy: username,
         createdBy: username,
-      }))
+      }),
+    });
 
-    if (!created){
-      throw new ValidationError('Employee already exist')
+    if (!created) {
+      throw new ValidationError('Employee already exist');
     }
 
     return res.status(201).json({ data: employeeInstance, message: 'Create employee successfully' });
@@ -125,7 +129,6 @@ export const deleteEmployee = async (req, res, next) => {
     let rowAffected = await Employee.destroy({ where: { employeeNumber: id }, transaction: t });
 
     await t.commit();
-
 
     return res.status(200).json({ message: `Delete successfully ${rowAffected} record` });
   } catch (error) {

@@ -51,6 +51,11 @@ app.use('/orders', orderRouter);
 app.use('/logs', logRouter);
 app.use('/product-lines', productLineRouter);
 
+// healthcheck
+app.get('/healthcheck', (req, res) => {
+  return res.status(200).json('pong');
+});
+
 // Not found method
 app.use((req, res, next) => {
   next(createError(404, 'Not found'));

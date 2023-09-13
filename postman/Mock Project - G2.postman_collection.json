@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "9798bea6-651a-46d4-82ca-2c8f0589ddc3",
 		"name": "Mock Project - G2",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14536404"
 	},
 	"item": [
 		{
@@ -15,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"newcus\",\r\n    \"password\": \"123\",\r\n    \"isEmployee\": false,\r\n    \"customerNumber\": 103,\r\n    \"employeeNumber\": null\r\n}",
+							"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"isEmployee\": true,\r\n    \"customerNumber\": null,\r\n    \"employeeNumber\": 1000\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -42,7 +43,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"LocNH12\",\r\n    \"password\": \"12345678\"\r\n}",
+							"raw": "{\r\n    \"username\": \"nhloc\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -73,12 +74,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{LOCAL_API}}/customers",
+							"raw": "{{LOCAL_API}}/customers?customerNumber=100",
 							"host": [
 								"{{LOCAL_API}}"
 							],
 							"path": [
 								"customers"
+							],
+							"query": [
+								{
+									"key": "customerNumber",
+									"value": "100"
+								}
 							]
 						}
 					},
@@ -117,7 +124,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"contactLastName\": \"Ferguson\",\r\n    \"contactFirstName\": \"Peter\",\r\n    \"phone\": \"03 9520 4555\",\r\n    \"addressLine1\": \"636 St Kilda Road\",\r\n    \"addressLine2\": \"Level 34567\",\r\n    \"city\": \"Melbourne\",\r\n    \"state\": \"Victoria\",\r\n    \"postalCode\": \"30041\",\r\n    \"country\": \"Australia\",\r\n    \"creditLimit\": 117300\r\n}",
+							"raw": "{\r\n    \"contactLastName\": \"Ferguson\",\r\n    \"contactFirstName\": \"Peter\",\r\n    \"phone\": \"03 9520 4555\",\r\n    \"addressLine1\": \"636 St Kilda Road\",\r\n    \"addressLine2\": \"Level 34567\",\r\n    \"city\": \"Melbourne\",\r\n    \"state\": \"Victoria\",\r\n    \"postalCode\": \"30041\",\r\n    \"country\": \"Australia\",\r\n    \"creditLimit\": 117399\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -167,7 +174,13 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "x-api-key",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -215,10 +228,16 @@
 					"name": "Create new employee",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "x-api-key",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"employeeNumber\": 2006,\r\n    \"firstName\": \"Pham\",\r\n    \"lastName\": \"Cuong\",\r\n    \"extension\": \"X2000\",\r\n    \"email\": \"abc@gmail.com\",\r\n    \"officeCode\": \"2\",\r\n    \"reportsTo\": 1002,\r\n    \"role\": 1\r\n}",
+							"raw": "{\r\n    \"employeeNumber\": 1000,\r\n    \"firstName\": \"Nguyen Huu\",\r\n    \"lastName\": \"Loc\",\r\n    \"extension\": \"X2000\",\r\n    \"email\": \"abc@gmail.com\",\r\n    \"officeCode\": \"2\",\r\n    \"reportsTo\": 1000,\r\n    \"jobTitle\": \"Staff\",\r\n    \"role\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -285,16 +304,46 @@
 			]
 		},
 		{
-			"name": "Log",
+			"name": "Orders",
 			"item": [
 				{
-					"name": "Create",
+					"name": "Get orders by filter",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{LOCAL_API}}/orders?orderNumber=10434",
+							"host": [
+								"{{LOCAL_API}}"
+							],
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "orderNumber",
+									"value": "10434"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new order",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user\": \"xuannam\",\r\n    \"logLevel\": \"Info\",\r\n    \"message\": \"chuan phet\"\r\n}",
+							"raw": "{\r\n    \"order\": {\r\n        \"orderNumber\": 10444,\r\n        \"orderDate\": \"2004-09-27T00:00:00.000Z\",\r\n        \"requiredDate\": \"2004-10-05T00:00:00.000Z\",\r\n        \"shippedDate\": null,\r\n        \"status\": \"Disputed\",\r\n        \"comments\": \"Nguyen Huu Loc order\",\r\n        \"customerNumber\": 103\r\n    },\r\n    \"details\": [\r\n        {\r\n            \"productCode\": \"S24_2022\",\r\n            \"quantityOrdered\": 43,\r\n            \"priceEach\": 38.98,\r\n            \"orderLineNumber\": 1\r\n        }\r\n    ],\r\n    \"payment\": {\r\n        \"customerNumber\": 103,\r\n        \"amount\": 123.01\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -302,12 +351,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{LOCAL_API}}/logs",
+							"raw": "{{LOCAL_API}}/orders/",
 							"host": [
 								"{{LOCAL_API}}"
 							],
 							"path": [
-								"logs"
+								"orders",
+								""
 							]
 						}
 					},
@@ -320,7 +370,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"logLevel\": \"Error\"\r\n}",
+							"raw": "{\r\n    \"comments\": \"change to status Shipped\",\r\n    \"status\": \"Shipped\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -328,51 +378,143 @@
 							}
 						},
 						"url": {
-							"raw": "{{LOCAL_API}}/logs/633cfad1ca1afbe74255c254",
+							"raw": "{{LOCAL_API}}/orders/10444",
 							"host": [
 								"{{LOCAL_API}}"
 							],
 							"path": [
-								"logs",
-								"633cfad1ca1afbe74255c254"
+								"orders",
+								"10444"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "Delete order",
 					"request": {
-						"method": "GET",
+						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{LOCAL_API}}/logs?startAt=2022-9-22&endAt=2022-10-3&p=1",
+							"raw": "{{LOCAL_API}}/orders/10434?comments=order error",
 							"host": [
 								"{{LOCAL_API}}"
 							],
 							"path": [
-								"logs"
+								"orders",
+								"10434"
 							],
 							"query": [
 								{
-									"key": "startAt",
-									"value": "2022-9-22"
-								},
-								{
-									"key": "endAt",
-									"value": "2022-10-3"
-								},
-								{
-									"key": "p",
-									"value": "1"
+									"key": "comments",
+									"value": "order error"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Offices",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_API}}/offices?city&phone&country",
+							"host": [
+								"{{LOCAL_API}}"
+							],
+							"path": [
+								"offices"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": ""
+								},
+								{
+									"key": "phone",
+									"value": ""
+								},
+								{
+									"key": "country",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"officeCode\": \"90\",\r\n    \"city\": \"Hanoicity\",\r\n    \"phone\": \"+8377 0825\",\r\n    \"addressLine1\": \"1550 Court Place\",\r\n    \"addressLine2\": \"Suite 102\",\r\n    \"state\": \"nghe an que\",\r\n    \"country\": \"UKing\",\r\n    \"postalCode\": \"021076\",\r\n    \"territory\": \"NAcity\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_API}}/offices",
+							"host": [
+								"{{LOCAL_API}}"
+							],
+							"path": [
+								"offices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_API}}/offices/90",
+							"host": [
+								"{{LOCAL_API}}"
+							],
+							"path": [
+								"offices",
+								"90"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"officeCode\": \"90\",\r\n    \"city\": \"Hanoicity\",\r\n    \"phone\": \"+8377 0825\",\r\n    \"addressLine1\": \"1550 Court Place\",\r\n    \"addressLine2\": \"Suite 102\",\r\n    \"state\": \"nghe an que\",\r\n    \"country\": \"UKing\",\r\n    \"postalCode\": \"021076\",\r\n    \"territory\": \"NAcity\"\r\n}"
+						},
+						"url": {
+							"raw": "{{LOCAL_API}}/offices/90",
+							"host": [
+								"{{LOCAL_API}}"
+							],
+							"path": [
+								"offices",
+								"90"
 							]
 						}
 					},
@@ -640,39 +782,8 @@
 			]
 		},
 		{
-			"name": "Offices",
+			"name": "Log",
 			"item": [
-				{
-					"name": "Get",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{LOCAL_API}}/offices?city&phone&country",
-							"host": [
-								"{{LOCAL_API}}"
-							],
-							"path": [
-								"offices"
-							],
-							"query": [
-								{
-									"key": "city",
-									"value": ""
-								},
-								{
-									"key": "phone",
-									"value": ""
-								},
-								{
-									"key": "country",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Create",
 					"request": {
@@ -680,7 +791,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \r\n    \"officeCode\": \"90\",\r\n    \"city\": \"Hanoicity\",\r\n    \"phone\": \"+8377 0825\",\r\n    \"addressLine1\": \"1550 Court Place\",\r\n    \"addressLine2\": \"Suite 102\",\r\n    \"state\": \"nghe an que\",\r\n    \"country\": \"UKing\",\r\n    \"postalCode\": \"021076\",\r\n    \"territory\": \"NAcity\"\r\n}",
+							"raw": "{\r\n    \"user\": \"xuannam\",\r\n    \"logLevel\": \"Info\",\r\n    \"message\": \"chuan phet\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -688,30 +799,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{LOCAL_API}}/offices",
+							"raw": "{{LOCAL_API}}/logs",
 							"host": [
 								"{{LOCAL_API}}"
 							],
 							"path": [
-								"offices"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{LOCAL_API}}/offices/90",
-							"host": [
-								"{{LOCAL_API}}"
-							],
-							"path": [
-								"offices",
-								"90"
+								"logs"
 							]
 						}
 					},
@@ -724,28 +817,28 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \r\n    \"officeCode\": \"90\",\r\n    \"city\": \"Hanoicity\",\r\n    \"phone\": \"+8377 0825\",\r\n    \"addressLine1\": \"1550 Court Place\",\r\n    \"addressLine2\": \"Suite 102\",\r\n    \"state\": \"nghe an que\",\r\n    \"country\": \"UKing\",\r\n    \"postalCode\": \"021076\",\r\n    \"territory\": \"NAcity\"\r\n}"
+							"raw": "{\r\n    \"logLevel\": \"Error\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
-							"raw": "{{LOCAL_API}}/offices/90",
+							"raw": "{{LOCAL_API}}/logs/633cfad1ca1afbe74255c254",
 							"host": [
 								"{{LOCAL_API}}"
 							],
 							"path": [
-								"offices",
-								"90"
+								"logs",
+								"633cfad1ca1afbe74255c254"
 							]
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Orders",
-			"item": [
+				},
 				{
-					"name": "Get orders by filter",
+					"name": "Get",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -757,99 +850,25 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{LOCAL_API}}/orders?orderNumber=10434",
+							"raw": "{{LOCAL_API}}/logs?startAt=2022-9-22&endAt=2022-10-3&p=1",
 							"host": [
 								"{{LOCAL_API}}"
 							],
 							"path": [
-								"orders"
+								"logs"
 							],
 							"query": [
 								{
-									"key": "orderNumber",
-									"value": "10434"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create new order",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"order\": {\r\n        \"orderNumber\": 10435,\r\n        \"orderDate\": \"2004-09-27T00:00:00.000Z\",\r\n        \"requiredDate\": \"2004-10-05T00:00:00.000Z\",\r\n        \"shippedDate\": null,\r\n        \"status\": \"In Process\",\r\n        \"comments\": \"Nguyen Huu Loc order\",\r\n        \"customerNumber\": 103\r\n    },\r\n    \"details\": [\r\n        {\r\n            \"productCode\": \"S24_2022\",\r\n            \"quantityOrdered\": 43,\r\n            \"priceEach\": 38.98,\r\n            \"orderLineNumber\": 1\r\n        }\r\n    ],\r\n    \"payment\": {\r\n        \"customerNumber\": 103,\r\n        \"amount\": 123.01\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{LOCAL_API}}/orders/",
-							"host": [
-								"{{LOCAL_API}}"
-							],
-							"path": [
-								"orders",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"comments\": \"change to status Shipped\",\r\n    \"status\": \"Shipped\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{LOCAL_API}}/orders/10426",
-							"host": [
-								"{{LOCAL_API}}"
-							],
-							"path": [
-								"orders",
-								"10426"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete order",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{LOCAL_API}}/orders/10434?comments=order error",
-							"host": [
-								"{{LOCAL_API}}"
-							],
-							"path": [
-								"orders",
-								"10434"
-							],
-							"query": [
+									"key": "startAt",
+									"value": "2022-9-22"
+								},
 								{
-									"key": "comments",
-									"value": "order error"
+									"key": "endAt",
+									"value": "2022-10-3"
+								},
+								{
+									"key": "p",
+									"value": "1"
 								}
 							]
 						}
@@ -857,6 +876,23 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Healthcheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_API}}/healthcheck",
+					"host": [
+						"{{LOCAL_API}}"
+					],
+					"path": [
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -883,6 +919,16 @@
 		{
 			"key": "LOCAL_API",
 			"value": "http://localhost:4000"
+		},
+		{
+			"key": "username",
+			"value": "nhloc",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "123456",
+			"type": "string"
 		}
 	]
 }

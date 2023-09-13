@@ -5,13 +5,12 @@ dotenv.config({ path: '../.env' });
 const NODE_ENV = process.env.NODE_ENV; // dev & test & docker
 let config;
 
-console.log(NODE_ENV);
-
 if (NODE_ENV === 'test' || NODE_ENV === 'prod') {
   config = {
     host: '0.0.0.0',
     port: 4000,
     secretKey: 1234,
+    apiKey: 'x-api-key',
 
     sqlHost: '0.0.0.0',
     sqlPort: 3306,
@@ -28,6 +27,7 @@ if (NODE_ENV === 'test' || NODE_ENV === 'prod') {
     host: process.env.HOST || '0.0.0.0',
     port: process.env.PORT || 4000,
     secretKey: process.env.SECRET_KEY || 1234,
+    apiKey: 'x-api-key',
 
     sqlHost: process.env.SQL_HOST || 'mysql0',
     sqlPort: process.env.SQL_PORT || 3306,
@@ -44,6 +44,7 @@ if (NODE_ENV === 'test' || NODE_ENV === 'prod') {
     host: process.env.HOST || '0.0.0.0',
     port: process.env.PORT || 4000,
     secretKey: process.env.SECRET_KEY || 1234,
+    apiKey: process.env.API_KEY || 'x-api-key',
 
     sqlHost: process.env.SQL_HOST || '0.0.0.0',
     sqlPort: process.env.SQL_PORT || 3306,

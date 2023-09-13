@@ -44,12 +44,13 @@ export const addCustomer = async (req, res, next) => {
     const username = req.username;
 
     // Staff trở lên được tạo mọi dữ liệu khách hàng
-    let [customerInstance, created] = await Customer.findOrCreate(
-      Object.assign(customerRequest, {
+    let [customerInstance, created] = await Customer.findOrCreate({
+      where: { customerNumber: customerRequest.customerNumber },
+      defaults: Object.assign(customerRequest, {
         updatedBy: username,
         createdBy: username,
-      })
-    );
+      }),
+    });
 
     if (!created) {
       throw new ValidationError('Employee already exist');
