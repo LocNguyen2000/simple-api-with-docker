@@ -23,7 +23,7 @@ import Logger from './models/logger.mjs';
 const app = express();
 const port = config.port;
 
-connectToDb(sequelize, config.mongodb);
+connectToDb(sequelize);
 
 const swaggerDoc = JSON.parse(await readFile(new URL('./docs/swagger.json', import.meta.url)));
 

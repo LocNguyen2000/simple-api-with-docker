@@ -2,6 +2,10 @@
 /coverage
 
 .env
-.env.local
+dev.env
+prod.env
+docker.env
 
 *.pem
+
+.git
