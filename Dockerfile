@@ -7,14 +7,11 @@ FROM ${NODE_IMAGE}
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package*.json ./
-
-RUN npm install
-# RUN npm install pm2 -g
-# Bundle app source
 COPY . .
 
+RUN npm install
+
 # Run migration
-CMD [ "npm", "run" "start:hmr" ]
+CMD [ "npm", "run", "start:docker" ]
 EXPOSE 80
 

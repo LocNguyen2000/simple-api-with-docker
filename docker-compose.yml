@@ -36,7 +36,7 @@ services:
         start_period: 10s
       ports:      
         - ${MONGO_PORT}:27017
-      networks:      
+      networks:
         - my_network_2
     web:
       depends_on:      
@@ -49,6 +49,6 @@ services:
       environment:
         - NODE_ENV=docker
       ports:      
-        - "${PORT}:${PORT}"    
+        - "${PORT}:${PORT}"
       networks:      
         - my_network_2
