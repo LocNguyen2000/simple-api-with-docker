@@ -75,3 +75,5 @@ jobs:
             script: |
               cd ./${{vars.EC2_TARGET_DIR}}
               echo '${{vars.APP_ENV}}' > .env
+              sh startup.sh
+              
