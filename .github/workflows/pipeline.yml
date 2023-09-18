@@ -54,7 +54,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
   push-ec2:
     name: Deploy to EC2
-    needs: test
+    needs: push-dockerhub
     runs-on: ubuntu-latest
     steps:
         - name: Checkout the files
@@ -63,13 +63,13 @@ jobs:
           uses: easingthemes/ssh-deploy@main
           env:
             SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-            REMOTE_HOST: ${{ secrets.EC2_HOST_DNS }}
+            REMOTE_HOST: ${{ vars.EC2_HOST_DNS }}
             REMOTE_USER: ${{ vars.EC2_USERNAME }}
             TARGET: ${{ vars.EC2_TARGET_DIR }}
         - name: Executing remote ssh commands using ssh key
           uses: appleboy/ssh-action@master
           with:
-            host: ${{ secrets.EC2_HOST_DNS }}
+            host: ${{ vars.EC2_HOST_DNS }}
             username: ${{ vars.EC2_USERNAME }}
             key: ${{ secrets.EC2_SSH_KEY }}
             script: |
