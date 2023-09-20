@@ -14,4 +14,3 @@ RUN npm install
 # Run migration
 CMD [ "npm", "run", "start:docker" ]
 EXPOSE 80
-

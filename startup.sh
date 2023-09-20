@@ -10,6 +10,7 @@ else
     echo "Docker already installed"
 fi
 
-# 1, docker build --tag nhlochub/simple-api-with-docker .
-# 2, docker image pull nhlochub/simple-api-with-docker
-# docker run -d -p 4000:4000 nhlochub/simple-api-with-docker
+# 1, 
+sudo docker build --tag nhlochub/simple-api-with-docker .
+# 2, sudo docker image pull nhlochub/simple-api-with-docker:main
+sudo docker run -d -p 80:4000 nhlochub/simple-api-with-docker

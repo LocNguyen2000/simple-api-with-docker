@@ -56,6 +56,11 @@ app.get('/healthcheck', (req, res) => {
   return res.status(200).json('pong');
 });
 
+// healthcheck
+app.get('/test-request', (req, res) => {
+  return res.status(200).json(req.user || 'request');
+});
+
 // Not found method
 app.use((req, res, next) => {
   next(createError(404, 'Not found'));
