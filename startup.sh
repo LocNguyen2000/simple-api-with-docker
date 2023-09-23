@@ -10,7 +10,11 @@ else
     echo "Docker already installed"
 fi
 
-# 1, 
-sudo docker build --tag nhlochub/simple-api-with-docker .
-# 2, sudo docker image pull nhlochub/simple-api-with-docker:main
-sudo docker run -d -p 80:4000 nhlochub/simple-api-with-docker
+# 1, Stop & Remove all running container/images
+sudo docker stop $(sudo docker ps -a -q)
+sudo docker system prune -a
+
+# 2, 
+# sudo docker build --tag nhlochub/simple-api-with-docker .
+sudo docker image pull nhlochub/simple-api-with-docker:main
+sudo docker run -d --env-file ./.env -p 80:4000 nhlochub/simple-api-with-docker:main 
