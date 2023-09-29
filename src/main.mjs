@@ -58,7 +58,7 @@ app.get('/healthcheck', (req, res) => {
 
 // healthcheck
 app.get('/test-request', (req, res) => {
-  return res.status(200).json(req.user || 'request');
+  return res.status(200).json(req.headers['x-user-id'] || 'request');
 });
 
 // Not found method
